@@ -1,3 +1,4 @@
+```
 # Set the AWS provider configuration
 provider "aws" {
   region = "us-east-1"  # Change this to your desired AWS region
@@ -37,7 +38,7 @@ resource "aws_s3_bucket" "example_bucket" {
   bucket = "your-unique-bucket-name"  # Replace with a unique bucket name
   acl    = "private"  # Adjust ACL settings as needed
 }
-
+```
 ---
 # Explanation of Each Task
 
