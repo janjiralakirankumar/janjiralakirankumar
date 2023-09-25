@@ -1,10 +1,9 @@
-Yes, you can write the entire Terraform script for deploying the AWS resources in one file. Here's the complete script that includes the creation of 3 EC2 instances for Kubernetes, an AWS VPN Gateway, an EC2 instance for Terraform, and an S3 bucket, all in a single `.tf` file:
-
-```hcl
+# Set the AWS provider configuration
 provider "aws" {
-  region = "us-east-1"  # Replace with your desired AWS region
+  region = "us-east-1"  # Change this to your desired AWS region
 }
 
+# Create 3 EC2 instances for Kubernetes (Change instance details as needed)
 resource "aws_instance" "kubernetes" {
   count         = 3
   ami           = "ami-0c55b159cbfafe1f0"  # Replace with your desired AMI
@@ -15,12 +14,15 @@ resource "aws_instance" "kubernetes" {
   }
 }
 
+# Create an AWS VPN
 resource "aws_vpn_gateway" "vpn" {
+  # Configure VPN options as needed
   tags = {
     Name = "vpn-gateway"
   }
 }
 
+# Create an EC2 instance for Terraform (Change instance details as needed)
 resource "aws_instance" "terraform_instance" {
   ami           = "ami-0c55b159cbfafe1f0"  # Replace with your desired AMI
   instance_type = "t2.large"  # Adjust instance type as needed
@@ -30,15 +32,11 @@ resource "aws_instance" "terraform_instance" {
   }
 }
 
+# Create an S3 bucket
 resource "aws_s3_bucket" "example_bucket" {
   bucket = "your-unique-bucket-name"  # Replace with a unique bucket name
   acl    = "private"  # Adjust ACL settings as needed
 }
-```
-
-This script includes all the necessary components in one file. Just replace the placeholders with your specific configurations, such as AMI IDs, key names, and bucket names.
-
-After writing the script, you can use the standard Terraform commands (e.g., `terraform init`, `terraform plan`, and `terraform apply`) to initialize, plan, and apply the infrastructure changes.
 
 ---
 # Explanation of Each Task
