@@ -5,7 +5,7 @@
 - Basic AWS knowledge.
 - Familiarity with Infrastructure as Code (IaC) and Terraform.
 
-**Task 1.1: Manual EC2 Instance Setup with Terraform**
+**Task 1: Manual EC2 Instance Setup with Terraform**
 
 1. Launch EC2 Instance:
     - AWS Console: Region = `us-east-1`
@@ -15,49 +15,31 @@
     - KeyPair: `terraform-aws-KeyPair`
     - New Security Group Name: `terraform-aws-sg` and Allow ports `22 (SSH)` and `80 (HTTP)`.
     - Storage: `12 GiB`
-    - Copy and Paste UserData to directly install Terraform on to it. [Click Here](https://github.com/janjiralakirankumar/janjiralakirankumar/blob/main/README.md#userdata-script-to-directly-install-terraform-on-to-aws-ubuntu-server)
+    - To Directly Install Terraform on to Server using Userdata, Copy and Paste it in Userdata Section.
 
-2. SSH into Instance:
-    - Use SSH client with KeyPair.
-    - Username: `ubuntu`
+```
+#!/bin/bash
 
-3. Install Terraform:
-    ```shell
-    sudo hostnamectl set-hostname terraform-aws
-    ```
-    ```shell
-    sudo apt update
-    ```
-    ```shell
-    sudo apt install wget unzip -y
-    ```
-    ```shell
-    wget https://releases.hashicorp.com/terraform/1.5.7/terraform_1.5.7_linux_amd64.zip
-    ```
-    ```shell
-    unzip terraform_1.5.7_linux_amd64.zip
-    ```
-    ```shell
-    rm terraform_1.5.7_linux_amd64.zip
-    ```
-    ```shell
-    sudo mv terraform /usr/local/bin
-    ```
-    ```shell
-    terraform -v
-    ```
+# Change the HostName
+sudo hostnamectl set-hostname terraform-aws
 
-**Task 1.2: Install Required Packages**
-
-Install pip and AWS CLI:
-```shell
+# Update and upgrade packages, install AWS CLI, and Terraform
+sudo apt-get update -y
+sudo apt-get upgrade -y
 sudo apt-get install python3-pip -y
-```
-```shell
-sudo pip3 install awscli
-```
+sudo apt-get install -y awscli
 
-**Task 1.3: Configure AWS CLI**
+# Install the latest version of Terraform
+curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+sudo apt-get update -y
+sudo apt-get install -y terraform
+
+# Verify installations
+aws --version
+terraform version
+```
+**Task 2: Configure AWS CLI**
 
 Configure AWS CLI:
 ```shell
@@ -69,14 +51,14 @@ Provide Credentials like `Access Key` and `Secret Access Key`
 aws s3 ls
 ```
 
-**Step 2: Create a Working Directory**
+**Task 2: Create a Working Directory**
 
 ```bash
 mkdir terraform-aws
 cd terraform-aws
 ```
 
-**Step 3: Write Terraform Configuration**
+**Task 3: Write Terraform Configuration**
 
 Create `main.tf` and add Terraform configuration.
 
@@ -141,35 +123,35 @@ resource "aws_s3_bucket_acl" "example" {
 }
 
 ```
-**Step 4: Initialize Terraform Project**
+**Task 3: Initialize Terraform Project**
 
 Initialize the project:
 ```bash
 terraform init
 ```
 
-**Step 5: Review Execution Plan**
+**Task 4: Review Execution Plan**
 
 Review what Terraform will do:
 ```bash
 terraform plan
 ```
 
-**Step 6: Apply Configuration**
+**Task 5: Apply Configuration**
 
 Apply the configuration:
 ```bash
 terraform apply
 ```
 
-**Step 7: Verify Resources**
+**Task 6: Verify Resources**
 
 Check AWS resources:
 ```bash
 aws ec2 describe-instances
 ```
 
-**Step 8: Optional - Destroy Resources** (If the resources are not needed.)
+**Task 7: Optional - Destroy Resources** (If the resources are not needed.)
 
 If you no longer need the AWS resources and want to clean up, you can use Terraform to destroy them:
 
@@ -179,7 +161,7 @@ terraform destroy
 
 Be cautious when using this command, as it will delete the specified resources. Confirm by typing "yes" when prompted.
 
-**Step 9: Cleanup**
+**Task 8: Cleanup**
 
 After destroying the resources (if needed), it's important to remove your Terraform state files. Run the following commands:
 
@@ -193,27 +175,3 @@ terraform state rm aws_s3_bucket.example_bucket
 Replace the resource names as needed. This removes the resources from the Terraform state. Afterward, you can safely delete your Terraform working directory.
 
 ---
-
-#### UserData Script to directly install Terraform on to AWS Ubuntu Server.
-```
-#!/bin/bash
-
-# Change the HostName
-sudo hostnamectl set-hostname terraform-aws
-
-# Update and upgrade packages, install AWS CLI, and Terraform
-sudo apt-get update -y
-sudo apt-get upgrade -y
-sudo apt-get install python3-pip -y
-sudo apt-get install -y awscli
-
-# Install the latest version of Terraform
-curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
-echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
-sudo apt-get update -y
-sudo apt-get install -y terraform
-
-# Verify installations
-aws --version
-terraform version
-```
