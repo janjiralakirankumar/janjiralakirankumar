@@ -84,9 +84,9 @@ provider "aws" {
 # Create 3 EC2 instances for Kubernetes (Change instance details as needed)
 resource "aws_instance" "kubernetes" {
   count         = 3
-  ami           = "ami-0c55b159cbfafe1f0"  # Replace with your desired AMI
-  instance_type = "t2.micro"  # Adjust instance type as needed
-  key_name      = "your-key-name"  # Replace with your SSH key name
+  ami           = "ami-053b0d53c279acc90"  # Replace with your desired AMI
+  instance_type = "t2.large"  # Adjust instance type as needed
+  key_name      = "terraform-aws-KeyPair"  # Replace with your SSH key name
   tags = {
     Name = "kubernetes-instance-${count.index + 1}"
   }
@@ -102,7 +102,7 @@ resource "aws_vpn_gateway" "vpn" {
 
 # Create an S3 bucket
 resource "aws_s3_bucket" "example_bucket" {
-  bucket = "your-unique-bucket-name"  # Replace with a unique bucket name
+  bucket = "aws-modules-bucket"  # Replace with a unique bucket name
   acl    = "private"  # Adjust ACL settings as needed
 }
 
