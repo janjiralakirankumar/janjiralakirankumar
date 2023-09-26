@@ -1,7 +1,3 @@
-Sure, here's a slightly revised version of your setup guide for HPE Hybrid Cloud on AWS with Terraform:
-
----
-
 # Setting up HPE Hybrid Cloud on AWS with Terraform
 
 **Task 1: Manual EC2 Instance Setup with Terraform**
