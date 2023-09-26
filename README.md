@@ -1,18 +1,24 @@
+Sure, here's a slightly revised version of your setup guide for HPE Hybrid Cloud on AWS with Terraform:
+
+---
+
 # Setting up HPE Hybrid Cloud on AWS with Terraform
 
 **Task 1: Manual EC2 Instance Setup with Terraform**
 
-1. Launch EC2 Instance:
-    - AWS Console: Region = `us-east-1`
-    - Name: `"terraform-aws"`
-    - OS: `Ubuntu 22.04`
-    - Type: `t2.large`
-    - KeyPair: `terraform-aws-KeyPair`
-    - New Security Group Name: `terraform-aws-sg` and Allow ports `22 (SSH)` and `80 (HTTP)`.
-    - Storage: `12 GiB`
-    - To Directly Install Terraform on to Server using Userdata, Copy and Paste it in Userdata Section.
+1. **Launch EC2 Instance**:
+   - **AWS Console**:
+     - Region: `us-east-1`
+   - **Instance Configuration**:
+     - Name: `"terraform-aws"`
+     - OS: `Ubuntu 22.04`
+     - Type: `t2.large`
+     - KeyPair: `terraform-aws-KeyPair`
+     - Security Group: `terraform-aws-sg` with ports `22 (SSH)` and `80 (HTTP)` allowed.
+     - Storage: `12 GiB`
+   - Use the following script in the Userdata section to install Terraform directly on the server:
 
-```
+```bash
 #!/bin/bash
 
 # Change the HostName
@@ -38,29 +44,31 @@ terraform version
 **Task 2: Configure AWS CLI**
 
 Configure AWS CLI:
+
 ```shell
 aws configure
 ```
-Provide Credentials like `Access Key` and `Secret Access Key`
+
+Provide your credentials, including the `Access Key` and `Secret Access Key`.
 
 ```shell
 aws s3 ls
 ```
 
-**Task 3: Create a Working Directory Write Terraform Configuration**
+**Task 3: Create a Working Directory and Write Terraform Configuration**
 
 ```bash
 mkdir terraform-aws
 cd terraform-aws
 ```
 
-Create `main.tf` and add Terraform configuration.
+Create `main.tf` and add your Terraform configuration:
 
 ```shell
 vi main.tf
 ```
 
-```bash
+```hcl
 # Set the AWS provider configuration
 provider "aws" {
   region = "us-east-1"  # Change this to your desired AWS region
@@ -115,9 +123,9 @@ resource "aws_s3_bucket_acl" "example" {
   bucket = aws_s3_bucket.example.id
   acl    = "public-read"
 }
-
 ```
-**To Apply Configuration Run Below Commands**
+
+**To Apply Configuration, Run the Following Commands:**
 
 ```bash
 terraform init
@@ -142,9 +150,10 @@ terraform apply
 ```bash
 aws ec2 describe-instances
 ```
+
 ---
 
-**Task 4: Optional - Destroy Resources** (If the resources are not needed.)
+**Task 4: Optional - Destroy Resources** (If the resources are no longer needed)
 
 If you no longer need the AWS resources and want to clean up, you can use Terraform to destroy them:
 
@@ -156,14 +165,10 @@ Be cautious when using this command, as it will delete the specified resources. 
 
 **Task 5: Cleanup**
 
-After destroying the resources (if needed), it's important to remove your Terraform state files. Run the following commands:
+After destroying the resources (if needed), it's essential to remove your Terraform state files. Run the following commands:
 
 ```bash
 terraform state rm aws_instance.kubernetes
-```
-
-```bash
-terraform state rm aws_instance.terraform_instance
 ```
 
 ```bash
@@ -171,9 +176,11 @@ terraform state rm aws_vpn_gateway.vpn
 ```
 
 ```bash
-terraform state rm aws_s3_bucket.example_bucket
+terraform state rm aws_s3_bucket.example
 ```
 
 **Note:** Replace the resource names as needed. This removes the resources from the Terraform state. Afterward, you can safely delete your Terraform working directory.
 
 ---
+
+These revised instructions should help you set up HPE Hybrid Cloud on AWS with Terraform more effectively.
