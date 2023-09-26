@@ -123,33 +123,24 @@ resource "aws_s3_bucket_acl" "example" {
 }
 
 ```
-**Task 3: Initialize Terraform Project**
+**Initialize Terraform Project**
 
-Initialize the project:
 ```bash
 terraform init
 ```
 
-**Task 4: Review Execution Plan**
-
-Review what Terraform will do:
 ```bash
 terraform plan
 ```
 
-**Task 5: Apply Configuration**
-
-Apply the configuration:
 ```bash
 terraform apply
 ```
 
-**Task 6: Verify Resources**
-
-Check AWS resources:
 ```bash
 aws ec2 describe-instances
 ```
+---
 
 **Task 7: Optional - Destroy Resources** (If the resources are not needed.)
 
