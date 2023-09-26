@@ -1,3 +1,132 @@
+# Setting up HPE Hybrid Cloud on AWS with Terraform
+
+**Prerequisites:**
+- AWS account with permissions.
+- Basic AWS knowledge.
+- Familiarity with Infrastructure as Code (IaC) and Terraform.
+
+**Task 1.1: Manual EC2 Instance Setup with Terraform**
+
+1. Launch EC2 Instance:
+    - AWS Console: Region = `us-east-1`
+    - Name: `"terraform-aws"`
+    - OS: `Ubuntu 22.04`
+    - Type: `t2.large`
+    - KeyPair: `terraform-aws-KeyPair`
+    - Security Group: Allow ports `22 (SSH)` and `80 (HTTP)`.
+    - Storage: `10 GiB`
+
+2. SSH into Instance:
+    - Use SSH client with KeyPair.
+    - Username: `ubuntu`
+
+3. Install Terraform:
+    ```shell
+    sudo hostnamectl set-hostname terraform-aws
+    sudo apt update
+    sudo apt install wget unzip -y
+    wget https://releases.hashicorp.com/terraform/1.5.7/terraform_1.5.7_linux_amd64.zip
+    unzip terraform_1.5.7_linux_amd64.zip
+    rm terraform_1.5.7_linux_amd64.zip
+    sudo mv terraform /usr/local/bin
+    terraform -v
+    ```
+
+**Task 1.2: Install Required Packages**
+
+Install pip and AWS CLI:
+```shell
+sudo apt-get install python3-pip -y
+sudo pip3 install awscli
+```
+
+**Task 1.3: Configure AWS CLI**
+
+Configure AWS CLI:
+```shell
+aws configure
+```
+
+**Step 2: Create a Working Directory**
+
+Create a directory, e.g., "terraform-aws-setup":
+```bash
+mkdir terraform-aws
+cd terraform-aws
+```
+
+**Step 3: Write Terraform Configuration**
+
+Create `main.tf` and add Terraform configuration.
+
+**Step 4: Initialize Terraform Project**
+
+Initialize the project:
+```bash
+terraform init
+```
+
+**Step 5: Review Execution Plan**
+
+Review what Terraform will do:
+```bash
+terraform plan
+```
+
+**Step 6: Apply Configuration**
+
+Apply the configuration:
+```bash
+terraform apply
+```
+
+**Step 7: Verify Resources**
+
+Check AWS resources:
+```bash
+aws ec2 describe-instances
+```
+
+**Step 8: Optional - Destroy Resources**
+
+Destroy resources if needed:
+```bash
+terraform destroy
+```
+
+**Step 9: Cleanup**
+
+Remove Terraform state files:
+```bash
+terraform state rm <resource_name>
+```
+
+Delete the working directory.
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # HPE Hybrid Cloud - AWS Resources Setup:
 
 ### Prerequisites:
