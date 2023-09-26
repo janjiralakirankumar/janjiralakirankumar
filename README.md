@@ -160,8 +160,17 @@ After destroying the resources (if needed), it's important to remove your Terraf
 
 ```bash
 terraform state rm aws_instance.kubernetes
+```
+
+```bash
 terraform state rm aws_instance.terraform_instance
+```
+
+```bash
 terraform state rm aws_vpn_gateway.vpn
+```
+
+```bash
 terraform state rm aws_s3_bucket.example_bucket
 ```
 
