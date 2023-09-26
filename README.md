@@ -1,4 +1,4 @@
-Certainly! Here are detailed steps that college students can follow to understand and execute the provided Terraform configuration for managing AWS resources:
+# AWS Resources Setup:
 
 ### Prerequisites:
 - An AWS account with the necessary permissions.
@@ -7,6 +7,102 @@ Certainly! Here are detailed steps that college students can follow to understan
 - Familiarity with the concept of Infrastructure as Code (IaC) and Terraform.
 
 ### Step-by-Step Guide:
+
+### Task 1.1: Manually Launch One EC2 Instance in AWS and Install Terraform on It
+
+1. **Follow the Specific Configurations.:**
+
+    - Log in to AWS Console:
+    - **Region:** Choose `North Virginia (us-east-1)` as your AWS region.
+    - **Instance Name and Tags:** Give your instance a name like `"YourName-DevOps-Server."`
+    - **Application and OS Images (Amazon Machine Image):** Select `Ubuntu-22.04` as the operating system.
+    - **Instance Type:** Pick `"t2.micro"` as it's part of the free tier.
+    - Click on `"Create a New KeyPair"` and give the Key pair name as `YourName-DevOps-KeyPair`
+    - **Network Settings:** `Edit` >> In "Security group name" Enter `"YourName-DevOps-SecurityGroup` and allow ports `22 (SSH),` `80 (HTTP),` and `8080 (Custom)` for web traffic.
+    - **Configure storage:** Set storage to `10 GiB.`
+    - Click on `Launch Instance.`
+
+2. **SSH into Your EC2 Instance:**
+
+    - Use an SSH client `(like PuTTY or MobaXterm)` and the `KeyPair` you created.
+    - Username as `ubuntu` 
+
+3. **Install Terraform:**
+  
+    ```shell
+    sudo hostnamectl set-hostname DevOps-Server
+    bash
+    ```
+    ```shell
+    sudo apt update
+    ```
+    ```shell
+    sudo apt install wget unzip -y
+    ```
+    ```shell
+    wget https://releases.hashicorp.com/terraform/1.5.7/terraform_1.5.7_linux_amd64.zip
+    ```
+    ```shell
+    unzip terraform_1.5.7_linux_amd64.zip
+    ```
+    ```shell
+    rm terraform_1.5.7_linux_amd64.zip
+    ```
+    ```shell
+    sudo mv terraform /usr/local/bin
+    ```
+    ```shell
+    terraform
+    ```
+    ```shell
+    terraform -v
+    ```
+
+### Task 1.2: Install Required Packages.
+
+- Install Python package manager (pip) and AWS CLI:
+
+```shell
+sudo apt-get install python3-pip -y
+```
+
+```shell
+sudo pip3 install awscli
+```
+
+### Task 1.3: Configure AWS CLI for AWS Account Access
+
+**To configure AWS CLI, please follow these steps::**
+
+1.  Type `aws configure` and press enter.
+2.  Provide `AWS Access Key ID`, `AWS Secret Access Key`.
+3.  Press Enter for `default region name (us-east-1)`, and
+4.  Press Enter for `default output format (json)`.
+
+```shell
+aws configure
+```
+
+### Note: If Credentials are not available, generate them from AWS IAM Service.
+
+Once logged in, check your account access in the terminal with the following command:
+
+```shell
+aws s3 ls
+```
+
+or
+
+```shell
+aws iam list-users
+```
+
+Now you are authenticated to create resources in your AWS account.
+
+
+
+
+
 
 **Step 1: Install Terraform**
 
