@@ -197,9 +197,13 @@ Replace the resource names as needed. This removes the resources from the Terraf
 ```
 #!/bin/bash
 
+# Change the HostName
+sudo hostnamectl set-hostname terraform-aws
+
 # Update and upgrade packages, install AWS CLI, and Terraform
 sudo apt-get update -y
 sudo apt-get upgrade -y
+sudo apt-get install python3-pip -y
 sudo apt-get install -y awscli
 
 # Install the latest version of Terraform
