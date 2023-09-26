@@ -15,6 +15,7 @@
     - KeyPair: `terraform-aws-KeyPair`
     - New Security Group Name: `terraform-aws-sg` and Allow ports `22 (SSH)` and `80 (HTTP)`.
     - Storage: `12 GiB`
+    - Copy and Paste UserData to directly install Terraform on to it. [Click Here](https://github.com/janjiralakirankumar/janjiralakirankumar/blob/main/README.md#userdata-script-to-directly-install-terraform-on-to-aws-ubuntu-server)
 
 2. SSH into Instance:
     - Use SSH client with KeyPair.
