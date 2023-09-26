@@ -64,6 +64,10 @@ aws configure
 ```
 Provide Credentials like `Access Key` and `Secret Access Key`
 
+```shell
+aws s3 ls
+```
+
 **Step 2: Create a Working Directory**
 
 ```bash
@@ -74,6 +78,10 @@ cd terraform-aws
 **Step 3: Write Terraform Configuration**
 
 Create `main.tf` and add Terraform configuration.
+
+```shell
+vi main.tf
+```
 
 ```bash
 # Set the AWS provider configuration
