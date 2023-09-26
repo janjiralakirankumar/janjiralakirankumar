@@ -14,11 +14,11 @@
 
     - Log in to AWS Console:
     - **Region:** Choose `North Virginia (us-east-1)` as your AWS region.
-    - **Instance Name and Tags:** Give your instance a name like `"YourName-DevOps-Server."`
+    - **Instance Name and Tags:** Give your instance a name like `"terraform-aws"`
     - **Application and OS Images (Amazon Machine Image):** Select `Ubuntu-22.04` as the operating system.
-    - **Instance Type:** Pick `"t2.micro"` as it's part of the free tier.
-    - Click on `"Create a New KeyPair"` and give the Key pair name as `YourName-DevOps-KeyPair`
-    - **Network Settings:** `Edit` >> In "Security group name" Enter `"YourName-DevOps-SecurityGroup` and allow ports `22 (SSH),` `80 (HTTP),` and `8080 (Custom)` for web traffic.
+    - **Instance Type:** Pick `"t2.large"` (2vcpu 8gb).
+    - Click on `"Create a New KeyPair"` and give the Key pair name as `terraform-aws-KeyPair`
+    - **Network Settings:** `Edit` >> In "Security group name" Enter `"terraform-aws-SecurityGroup` and allow ports `22 (SSH),` and `80 (HTTP),` for web traffic.
     - **Configure storage:** Set storage to `10 GiB.`
     - Click on `Launch Instance.`
 
@@ -30,7 +30,7 @@
 3. **Install Terraform:**
   
     ```shell
-    sudo hostnamectl set-hostname DevOps-Server
+    sudo hostnamectl set-hostname terraform-aws
     bash
     ```
     ```shell
@@ -50,9 +50,6 @@
     ```
     ```shell
     sudo mv terraform /usr/local/bin
-    ```
-    ```shell
-    terraform
     ```
     ```shell
     terraform -v
@@ -105,8 +102,8 @@ Now you are authenticated to create resources in your AWS account.
 Create a dedicated directory on your computer where you'll organize your Terraform configuration files. For example, create a folder called "terraform-aws-setup."
 
 ```bash
-mkdir terraform-aws-setup
-cd terraform-aws-setup
+mkdir terraform-aws
+cd terraform-aws
 ```
 
 **Step 3: Write Terraform Configuration**
@@ -211,94 +208,3 @@ terraform state rm aws_s3_bucket.example_bucket
 Replace the resource names as needed. This removes the resources from the Terraform state. Afterward, you can safely delete your Terraform working directory.
 
 ---
-
-# Explanation of Each Task
-
-
-### Step 1: Set Up the AWS Provider
-
-In Terraform, the provider specifies the cloud platform you're using. In this case, we're using AWS.
-
-```hcl
-provider "aws" {
-  region = "us-east-1"  # Replace with your desired AWS region
-}
-```
-
-- `provider "aws"`: This section specifies that we're using AWS as our cloud provider.
-- `region = "us-east-1"`: Replace `"us-east-1"` with your preferred AWS region.
-
-### Step 2: Create EC2 Instances for Kubernetes
-
-We're going to create 3 EC2 instances for running Kubernetes. These are the virtual machines that will be part of your Kubernetes cluster.
-
-```hcl
-resource "aws_instance" "kubernetes" {
-  count         = 3
-  ami           = "ami-0c55b159cbfafe1f0"  # Replace with your desired AMI
-  instance_type = "t2.micro"  # Adjust instance type as needed
-  key_name      = "your-key-name"  # Replace with your SSH key name
-  tags = {
-    Name = "kubernetes-instance-${count.index + 1}"
-  }
-}
-```
-
-- `resource "aws_instance" "kubernetes"`: This declares an AWS resource block to create EC2 instances.
-- `count = 3`: We're creating 3 instances using the `count` parameter.
-- `ami`: Replace `"ami-0c55b159cbfafe1f0"` with the Amazon Machine Image (AMI) ID you want to use.
-- `instance_type`: Set the instance type according to your requirements.
-- `key_name`: Replace `"your-key-name"` with the name of your SSH key pair.
-
-### Step 3: Create an AWS VPN
-
-Now, let's create an AWS VPN Gateway.
-
-```hcl
-resource "aws_vpn_gateway" "vpn" {
-  # Configure VPN options as needed
-  tags = {
-    Name = "vpn-gateway"
-  }
-}
-```
-
-- `resource "aws_vpn_gateway" "vpn"`: This declares an AWS VPN Gateway resource.
-- `tags`: You can add tags to the VPN gateway for better organization.
-
-### Step 4: Launch an EC2 Instance for Terraform
-
-We'll create another EC2 instance, this time for running Terraform.
-
-```hcl
-resource "aws_instance" "terraform_instance" {
-  ami           = "ami-0c55b159cbfafe1f0"  # Replace with your desired AMI
-  instance_type = "t2.large"  # Adjust instance type as needed
-  key_name      = "your-key-name"  # Replace with your SSH key name
-  tags = {
-    Name = "terraform-instance"
-  }
-}
-```
-
-- `resource "aws_instance" "terraform_instance"`: This declares an AWS resource block for the Terraform instance.
-- `ami`, `instance_type`, and `key_name`: Similar to the Kubernetes instances, configure these based on your preferences.
-
-### Step 5: Create an S3 Bucket
-
-Finally, let's create an S3 bucket.
-
-```hcl
-resource "aws_s3_bucket" "example_bucket" {
-  bucket = "your-unique-bucket-name"  # Replace with a unique bucket name
-  acl    = "private"  # Adjust ACL settings as needed
-}
-```
-
-- `resource "aws_s3_bucket" "example_bucket"`: This declares an AWS S3 bucket resource.
-- `bucket`: Replace `"your-unique-bucket-name"` with a globally unique name for your S3 bucket.
-- `acl`: Set the access control level as needed (e.g., "private" for maximum security).
-
-Remember to replace placeholder values with your specific configurations, such as AMI IDs, key names, and bucket names. Also, ensure that the AWS region specified in the provider block matches your desired AWS region.
-
-Once you've written your Terraform script, you can use the `terraform init`, `terraform plan`, and `terraform apply` commands to initialize the project, preview changes, and create the resources in your AWS account, respectively.
