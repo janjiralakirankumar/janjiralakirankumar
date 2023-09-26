@@ -111,7 +111,12 @@ resource "aws_vpn_gateway" "vpn" {
 # Create an S3 bucket
 resource "aws_s3_bucket" "example_bucket" {
   bucket = "aws-modules-bucket"  # Replace with a unique bucket name
+
+# Other bucket configuration settings
+resource "aws_s3_bucket_acl" "example_bucket_acl" {
+  bucket = aws_s3_bucket.example_bucket.id
   acl    = "private"  # Adjust ACL settings as needed
+}
 }
 
 ```
