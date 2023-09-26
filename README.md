@@ -13,8 +13,8 @@
     - OS: `Ubuntu 22.04`
     - Type: `t2.large`
     - KeyPair: `terraform-aws-KeyPair`
-    - Security Group: Allow ports `22 (SSH)` and `80 (HTTP)`.
-    - Storage: `10 GiB`
+    - New Security Group: Name: terraform-aws-SG and Allow ports `22 (SSH)` and `80 (HTTP)`.
+    - Storage: `12 GiB`
 
 2. SSH into Instance:
     - Use SSH client with KeyPair.
@@ -23,12 +23,26 @@
 3. Install Terraform:
     ```shell
     sudo hostnamectl set-hostname terraform-aws
+    ```
+    ```shell
     sudo apt update
+    ```
+    ```shell
     sudo apt install wget unzip -y
+    ```
+    ```shell
     wget https://releases.hashicorp.com/terraform/1.5.7/terraform_1.5.7_linux_amd64.zip
+    ```
+    ```shell
     unzip terraform_1.5.7_linux_amd64.zip
+    ```
+    ```shell
     rm terraform_1.5.7_linux_amd64.zip
+    ```
+    ```shell
     sudo mv terraform /usr/local/bin
+    ```
+    ```shell
     terraform -v
     ```
 
@@ -36,7 +50,9 @@
 
 Install pip and AWS CLI:
 ```shell
-sudo apt-get install python3-pip -y
+sudo apt-get install python3-pip -y    ```
+```
+```shell
 sudo pip3 install awscli
 ```
 
@@ -46,10 +62,11 @@ Configure AWS CLI:
 ```shell
 aws configure
 ```
+Provide Credentials
 
 **Step 2: Create a Working Directory**
 
-Create a directory, e.g., "terraform-aws-setup":
+Create a directory, e.g., "terraform-aws":
 ```bash
 mkdir terraform-aws
 cd terraform-aws
@@ -59,6 +76,38 @@ cd terraform-aws
 
 Create `main.tf` and add Terraform configuration.
 
+```bash
+# Set the AWS provider configuration
+provider "aws" {
+  region = "us-east-1"  # Change this to your desired AWS region
+}
+
+# Create 3 EC2 instances for Kubernetes (Change instance details as needed)
+resource "aws_instance" "kubernetes" {
+  count         = 3
+  ami           = "ami-0c55b159cbfafe1f0"  # Replace with your desired AMI
+  instance_type = "t2.micro"  # Adjust instance type as needed
+  key_name      = "your-key-name"  # Replace with your SSH key name
+  tags = {
+    Name = "kubernetes-instance-${count.index + 1}"
+  }
+}
+
+# Create an AWS VPN
+resource "aws_vpn_gateway" "vpn" {
+  # Configure VPN options as needed
+  tags = {
+    Name = "vpn-gateway"
+  }
+}
+
+# Create an S3 bucket
+resource "aws_s3_bucket" "example_bucket" {
+  bucket = "your-unique-bucket-name"  # Replace with a unique bucket name
+  acl    = "private"  # Adjust ACL settings as needed
+}
+
+```
 **Step 4: Initialize Terraform Project**
 
 Initialize the project:
