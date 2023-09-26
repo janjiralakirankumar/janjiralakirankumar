@@ -91,7 +91,7 @@ resource "aws_vpn_gateway" "vpn" {
 
 # Create an S3 bucket
 resource "aws_s3_bucket" "example" {
-  bucket = "my-tf-example-bucket"
+  bucket = "aws-modules-bucket"
 }
 
 resource "aws_s3_bucket_ownership_controls" "example" {
@@ -157,7 +157,7 @@ If you no longer need the AWS resources and want to clean up, you can use Terraf
 terraform destroy
 ```
 
-Be cautious when using this command, as it will delete the specified resources. Confirm by typing "yes" when prompted.
+Be cautious when using this command, as it will delete the specified resources. Confirm by typing `"yes"` when prompted.
 
 **Task 5: Cleanup**
 
