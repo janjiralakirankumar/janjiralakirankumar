@@ -1,8 +1,7 @@
-# AWS Resources Setup:
+# HPE Hybrid Cloud - AWS Resources Setup:
 
 ### Prerequisites:
 - An AWS account with the necessary permissions.
-- AWS CLI installed and configured on your local machine (to manage AWS credentials).
 - Basic knowledge of AWS concepts like instances, security groups, and key pairs.
 - Familiarity with the concept of Infrastructure as Code (IaC) and Terraform.
 
