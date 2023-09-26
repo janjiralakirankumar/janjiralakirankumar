@@ -1,10 +1,5 @@
 # Setting up HPE Hybrid Cloud on AWS with Terraform
 
-**Prerequisites:**
-- AWS account with permissions.
-- Basic AWS knowledge.
-- Familiarity with Infrastructure as Code (IaC) and Terraform.
-
 **Task 1: Manual EC2 Instance Setup with Terraform**
 
 1. Launch EC2 Instance:
@@ -39,6 +34,7 @@ sudo apt-get install -y terraform
 aws --version
 terraform version
 ```
+
 **Task 2: Configure AWS CLI**
 
 Configure AWS CLI:
@@ -51,14 +47,12 @@ Provide Credentials like `Access Key` and `Secret Access Key`
 aws s3 ls
 ```
 
-**Task 2: Create a Working Directory**
+**Task 3: Create a Working Directory Write Terraform Configuration**
 
 ```bash
 mkdir terraform-aws
 cd terraform-aws
 ```
-
-**Task 3: Write Terraform Configuration**
 
 Create `main.tf` and add Terraform configuration.
 
@@ -123,10 +117,18 @@ resource "aws_s3_bucket_acl" "example" {
 }
 
 ```
-**Initialize Terraform Project**
+**To Apply Configuration Run Below Commands**
 
 ```bash
 terraform init
+```
+
+```bash
+terraform fmt
+```
+
+```bash
+terraform validate
 ```
 
 ```bash
@@ -142,7 +144,7 @@ aws ec2 describe-instances
 ```
 ---
 
-**Task 7: Optional - Destroy Resources** (If the resources are not needed.)
+**Task 4: Optional - Destroy Resources** (If the resources are not needed.)
 
 If you no longer need the AWS resources and want to clean up, you can use Terraform to destroy them:
 
@@ -152,7 +154,7 @@ terraform destroy
 
 Be cautious when using this command, as it will delete the specified resources. Confirm by typing "yes" when prompted.
 
-**Task 8: Cleanup**
+**Task 5: Cleanup**
 
 After destroying the resources (if needed), it's important to remove your Terraform state files. Run the following commands:
 
@@ -163,6 +165,6 @@ terraform state rm aws_vpn_gateway.vpn
 terraform state rm aws_s3_bucket.example_bucket
 ```
 
-Replace the resource names as needed. This removes the resources from the Terraform state. Afterward, you can safely delete your Terraform working directory.
+**Note:** Replace the resource names as needed. This removes the resources from the Terraform state. Afterward, you can safely delete your Terraform working directory.
 
 ---
