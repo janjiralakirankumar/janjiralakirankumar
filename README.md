@@ -178,5 +178,3 @@ terraform state rm aws_s3_bucket.example
 **Note:** Replace the resource names as needed. This removes the resources from the Terraform state. Afterward, you can safely delete your Terraform working directory.
 
 ---
-
-These revised instructions should help you set up HPE Hybrid Cloud on AWS with Terraform more effectively.
